@@ -1,0 +1,6 @@
+{
+  "name": "PaintingPro AI",
+  "description": "The AI-powered operating system for painting companies, featuring intelligent lead flows, dynamic estimates, client management, crew optimization, financial modeling, and business SOP generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

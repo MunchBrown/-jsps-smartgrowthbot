@@ -1,0 +1,63 @@
+{
+  "entities": {
+    "leads": {
+      "title": "Leads",
+      "description": "Painting leads and prospect pipeline",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "phone": { "type": "string" },
+        "email": { "type": "string" },
+        "address": { "type": "string" },
+        "city": { "type": "string" },
+        "projectType": { "type": "string" },
+        "budget": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["name", "status"]
+    },
+    "estimates": {
+      "title": "Estimates",
+      "description": "Custom painting proposals and takeoffs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientName": { "type": "string" },
+        "propertyAddress": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["clientName", "totalAmount"]
+    },
+    "invoices": {
+      "title": "Invoices",
+      "description": "Billing and payment ledgers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientName": { "type": "string" },
+        "amount": { "type": "number" },
+        "status": { "type": "string" },
+        "dueDate": { "type": "string" }
+      },
+      "required": ["clientName", "amount"]
+    },
+    "reviews": {
+      "title": "Reviews",
+      "description": "Customer reviews and video testimonials",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "clientName": { "type": "string" },
+        "rating": { "type": "number" },
+        "content": { "type": "string" },
+        "platform": { "type": "string" },
+        "date": { "type": "string" }
+      },
+      "required": ["clientName", "rating"]
+    }
+  }
+}
