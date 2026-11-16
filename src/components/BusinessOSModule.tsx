@@ -29,17 +29,13 @@ export default function BusinessOSModule() {
         body: JSON.stringify({ question: advisorQuery })
       });
       if (!res.ok) {
-        throw new Error(`Strategic advisor HTTP error status: ${res.status}`);
+        throw new Error((await res.json().catch(() => ({}))).error || `HTTP ${res.status}`);
       }
       const data = await res.json();
       setAdvisorResponse(data.guidance || "Consultation complete.");
     } catch (err) {
       console.error(err);
-      setAdvisorResponse(`Strategic Consultation Report:
-1. SPECIFY HIGH-SHEEN SHEENS IN BIDS: Standard contractors default to flat white. Offering Premium satin and semi-gloss wood casing treatments differentiates you as custom.
-2. DISPATCH AUTOMATED WORKFLOW REMINDERS: Closing bids within 24 hours of on-site measurements raises close rate by 47%.
-3. LOCALIZED SEO POSTS: Generate weekly optimized blog postings using target keywords to dominate local organic search.
-4. HIGHER MARKUP MARGINS: Increase baseline markup from 30% to 45% immediately, adding specific high-margin options like accent walls and ceiling coat refreshes.`);
+      setAdvisorResponse(`The AI advisor is unavailable right now (${(err as Error)?.message || "unknown error"}). Try again in a minute.`);
     } finally {
       setAdvisorLoading(false);
     }
@@ -57,21 +53,13 @@ export default function BusinessOSModule() {
         body: JSON.stringify({ topic: sopTopic })
       });
       if (!res.ok) {
-        throw new Error(`SOP builder HTTP error status: ${res.status}`);
+        throw new Error((await res.json().catch(() => ({}))).error || `HTTP ${res.status}`);
       }
       const data = await res.json();
       setSopResponse(data.sop || "SOP generated.");
     } catch (err) {
       console.error(err);
-      setSopResponse(`STANDARD OPERATING PROCEDURE: ${sopTopic.toUpperCase()}
-1. PURPOSE & INTENT: Establishes safe, repeatable guidelines to minimize property damage and maintain dust containment on residential interior painting operations.
-2. PREPARATION PHASE: 
-   - Mask off all baseboards and doors with high-tack tape.
-   - Install heavy-duty plastic zippers over interior doorways to seal room perimeter.
-3. SANDING STANDARDS:
-   - Always use dust-extracting power sanders attached to HEPA filtration units.
-   - Painters must wear N95 or dual-cartridge respirators at all times on site.
-4. QUALITY SIGNOFF CHECKLIST: Verify site cleanliness with owner before paint coating kickoff.`);
+      setSopResponse(`The SOP builder is unavailable right now (${(err as Error)?.message || "unknown error"}). Try again in a minute.`);
     } finally {
       setSopLoading(false);
     }
@@ -83,7 +71,7 @@ export default function BusinessOSModule() {
       {/* Sub tabs */}
       <div className="flex flex-wrap items-center justify-between border-b border-slate-850 pb-3 gap-4">
         <div className="flex gap-2">
-          {["advisor", "sop", "health"].map((tab) => (
+          {["advisor", "sop"].map((tab) => (
             <button 
               key={tab}
               onClick={() => setActiveTab(tab as any)}
@@ -95,9 +83,7 @@ export default function BusinessOSModule() {
             </button>
           ))}
         </div>
-        <div className="text-xs text-slate-500 font-mono">
-          OPERATIONAL STATE: <span className="text-emerald-400 font-bold">100% HEALTHY</span>
-        </div>
+
       </div>
 
       {/* STRATEGIC ADVISOR VIEW */}
@@ -240,7 +226,7 @@ export default function BusinessOSModule() {
       )}
 
       {/* COMPREHENSIVE BUSINESS HEALTH INDEX VIEW */}
-      {activeTab === "health" && (
+      {false && activeTab === "health" && (
         <div className="bg-slate-900 border border-slate-800 p-6 rounded-2xl space-y-6" id="view-health-index">
           <div className="space-y-1 text-left border-b border-slate-800 pb-3 flex justify-between items-end">
             <div>

@@ -26,10 +26,11 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
   const [photoAnalyzing, setPhotoAnalyzing] = useState(false);
 
   // Form states
-  const [clientName, setClientName] = useState("David Thompson");
-  const [clientEmail, setClientEmail] = useState("david@thompsondental.com");
-  const [clientPhone, setClientPhone] = useState("(717) 555-0310");
-  const [projectAddress, setProjectAddress] = useState("1024 Ridge View Dr, York, PA");
+  const [clientName, setClientName] = useState("");
+  const [saveError, setSaveError] = useState("");
+  const [clientEmail, setClientEmail] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [projectAddress, setProjectAddress] = useState("");
 
   // Step 2 Measurements
   const [wallHeight, setWallHeight] = useState("9");
@@ -92,6 +93,9 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
     fileInputRef.current?.click();
   };
 
+  const [photoNote, setPhotoNote] = useState("");
+  const alertPhotoNote = (msg: string) => setPhotoNote(msg);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -102,41 +106,40 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
 
   const handleAnalyzePhoto = async (file: File) => {
     setPhotoAnalyzing(true);
+    setPhotoNote("");
     try {
+      if (file.size > 5 * 1024 * 1024) throw new Error("That photo is too large. Use one under 5 MB.");
+      const imageData = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result || ""));
+        reader.onerror = () => reject(new Error("Couldn't read that photo."));
+        reader.readAsDataURL(file);
+      });
       const res = await fetch("/api/room-photo-estimate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          imageName: file.name,
-          imageType: file.type
-        })
+        body: JSON.stringify({ imageData, imageType: file.type })
       });
-      if (!res.ok) {
-        throw new Error(`Room photo analysis HTTP error status: ${res.status}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "The photo couldn't be analyzed.");
+      setWallHeight(String(data.wallHeight ?? ""));
+      setWallWidth(String(data.wallWidth ?? ""));
+      setWallLength(String(data.wallLength ?? ""));
+      setDoorsCount(String(data.doors ?? ""));
+      setWindowsCount(String(data.windows ?? ""));
+      if (data.suggestedSheen) setPaintSheen(data.suggestedSheen);
+      if (data.confidence && String(data.confidence).toLowerCase() !== "high") {
+        alertPhotoNote(`AI confidence: ${data.confidence}. Double-check the measurements on site.`);
       }
-      const data = await res.json();
-      
-      // Auto fill measurements
-      setWallHeight(data.wallHeight?.toString() || "9");
-      setWallWidth(data.wallWidth?.toString() || "16");
-      setWallLength(data.wallLength?.toString() || "14");
-      setDoorsCount(data.doors?.toString() || "2");
-      setWindowsCount(data.windows?.toString() || "3");
-      setPaintSheen(data.suggestedSheen || "Satin");
-    } catch (err) {
-      console.error(err);
-      // Fallback auto fill
-      setWallHeight("9");
-      setWallWidth("16");
-      setWallLength("14");
-      setDoorsCount("2");
-      setWindowsCount("2");
+    } catch (err: any) {
+      alertPhotoNote(err?.message || "The photo couldn't be analyzed. Enter the measurements by hand.");
     } finally {
       setPhotoAnalyzing(false);
     }
   };
 
   const handleCreateEstimate = async () => {
+    setSaveError("");
     const newEst: Estimate = {
       id: "EST-" + Date.now(),
       clientName,
@@ -175,18 +178,13 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newEst)
       });
-      if (res.ok) {
-        const serverEst = await res.json();
-        setEstimates([serverEst, ...estimates]);
-        setSelectedEstimate(serverEst);
-      } else {
-        setEstimates([newEst, ...estimates]);
-        setSelectedEstimate(newEst);
-      }
-    } catch (err) {
-      console.error("Failed to post estimate:", err);
-      setEstimates([newEst, ...estimates]);
-      setSelectedEstimate(newEst);
+      const serverEst = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(serverEst.error || "The estimate couldn't be saved.");
+      setEstimates([serverEst, ...estimates]);
+      setSelectedEstimate(serverEst);
+    } catch (err: any) {
+      setSaveError(err?.message || "The estimate couldn't be saved.");
+      return;
     }
 
     setActiveTab("board");
@@ -368,7 +366,7 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
     doc.setTextColor(100, 116, 139);
     doc.setFont("helvetica", "italic");
     doc.setFontSize(7);
-    doc.text("TERMS AND CONDITIONS: PaintingPro AI serves as an automated operational pricing simulation tool. This document constitutes a formal scope agreement based on current regional material cost indexes and drywall preconditioning. Actual labor parameters may vary up to 10% on physical inspection of drywall surface cracks.", 15, yPos, { maxWidth: 180 });
+    doc.text("TERMS AND CONDITIONS: This estimate was prepared with Smart Growth Bot Painting AI. This document constitutes a formal scope agreement based on current regional material cost indexes and drywall preconditioning. Actual labor parameters may vary up to 10% on physical inspection of drywall surface cracks.", 15, yPos, { maxWidth: 180 });
 
     // Digital Signature Line
     yPos += 14;
@@ -420,17 +418,13 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newEst)
       });
-      if (res.ok) {
-        const serverEst = await res.json();
-        setEstimates([serverEst, ...estimates]);
-        setSelectedEstimate(serverEst);
-      } else {
-        setEstimates([newEst, ...estimates]);
-        setSelectedEstimate(newEst);
-      }
-    } catch (err) {
-      setEstimates([newEst, ...estimates]);
-      setSelectedEstimate(newEst);
+      const serverEst = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(serverEst.error || "The estimate couldn't be saved.");
+      setEstimates([serverEst, ...estimates]);
+      setSelectedEstimate(serverEst);
+    } catch (err: any) {
+      setSaveError(err?.message || "The estimate couldn't be saved.");
+      return;
     }
     setActiveTab("board");
   };
@@ -687,10 +681,12 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
                         <RefreshCw className="h-4 w-4 animate-spin" />
                         <span>AI evaluating ceiling height and linear trim...</span>
                       </div>
+                    ) : photoNote ? (
+                      <div className="text-amber-300 text-xs font-bold text-center">{photoNote}</div>
                     ) : (
                       <div className="text-emerald-400 text-xs font-mono font-bold flex items-center justify-center gap-1">
                         <Check className="h-4 w-4" />
-                        <span>Measurement Specs extracted successfully!</span>
+                        <span>Measurements estimated from the photo — confirm on site.</span>
                       </div>
                     )}
                   </div>
@@ -701,7 +697,7 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
                     </div>
                     <div>
                       <p className="text-xs font-extrabold text-white">Drag & drop room photo or click to browse</p>
-                      <p className="text-[10px] text-slate-500 font-mono pt-1">Supports PNG, JPEG up to 10MB</p>
+                      <p className="text-[10px] text-slate-500 font-mono pt-1">JPG, PNG, WEBP or HEIC up to 5 MB</p>
                     </div>
                   </>
                 )}
@@ -1038,7 +1034,7 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
 
               <div className="bg-slate-950 p-4 rounded-2xl border border-slate-850 text-xs text-slate-400 leading-relaxed font-mono space-y-3">
                 <div className="font-bold text-white text-[11px] pb-1 border-b border-slate-900">PREVIEW SCOPE TERMS:</div>
-                <p>PaintingPro franchise agency agrees to apply coating treatments according to room height of {wallHeight} ft, incorporating {paintBrand} {paintLine} satin finishes on drywall.</p>
+                <p>The contractor agrees to apply coating treatments according to room height of {wallHeight} ft, incorporating {paintBrand} {paintLine} satin finishes on drywall.</p>
                 <p>CUSTOMER SIGNATURE AUTHORIZATION binds client to estimate total of <strong className="text-orange-400">${finalCalculatedTotal.toLocaleString()}</strong> plus regional sales taxes.</p>
               </div>
 
@@ -1088,10 +1084,11 @@ export default function QuoteGeniusModule({ estimates, setEstimates }: QuoteGeni
                   disabled={!signatureName || !signatureConfirmed}
                   className="flex-1 bg-orange-500 hover:bg-orange-600 disabled:opacity-50 text-white font-bold py-3 px-4 rounded-xl text-xs transition flex justify-center items-center gap-1.5 cursor-pointer"
                 >
-                  Save & Publish Estimate Proposal
+                  Save Estimate
                   <CheckCircle2 className="h-4 w-4" />
                 </button>
               </div>
+              {saveError && <p className="text-xs font-bold text-red-400 pt-2">{saveError}</p>}
             </div>
           )}
 

@@ -34,19 +34,19 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
       id: "script-professional",
       title: "Sophie - Polished Receptionist",
       tone: "Professional & Welcoming",
-      content: "Hello! Thank you for calling Smart Growth Painting, where preparation is 80% of a masterpiece. My name is Sophie, your AI Assistant. How can I make your property look beautiful today?"
+      content: "Hello! Thank you for calling Sample Painting Co., where preparation is 80% of a masterpiece. My name is Sophie, your AI Assistant. How can I make your property look beautiful today?"
     },
     {
       id: "script-urgent",
       title: "Sarah - Rapid Booking Closer",
       tone: "Urgent & Direct",
-      content: "Hi! Thanks for calling Smart Growth Painting! This is Sarah. We are currently booking residential exterior estimates for next week with a 10% seasonal discount. Let's get your project scheduled! What is the address of the property you'd like painted?"
+      content: "Hi! Thanks for calling Sample Painting Co.! This is Sarah. We are currently booking residential exterior estimates for next week with a 10% seasonal discount. Let's get your project scheduled! What is the address of the property you'd like painted?"
     },
     {
       id: "script-warm",
       title: "Marcus - Warm Consultant",
       tone: "Friendly & Educational",
-      content: "Hi there! Welcome to Smart Growth Painting. This is Marcus. We specialize in eco-friendly low-VOC finishes and premium cabinetry coatings. Are you looking to refresh your home's interior, or do you have a commercial project in mind?"
+      content: "Hi there! Welcome to Sample Painting Co.. This is Marcus. We specialize in eco-friendly low-VOC finishes and premium cabinetry coatings. Are you looking to refresh your home's interior, or do you have a commercial project in mind?"
     }
   ]);
 
@@ -101,8 +101,8 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
   const [selectedLeadForOutbound, setSelectedLeadForOutbound] = useState<string>("");
   const [outboundCampaignTopic, setOutboundCampaignTopic] = useState("Estimate Follow-up");
   const outboundCampaigns = [
-    { topic: "Estimate Follow-up", pitch: "Hi, I am calling on behalf of Smart Growth Painting regarding the interior repaint quote we sent over on Friday. We wanted to see if you had any questions on the premium package or the prep scope?" },
-    { topic: "Summer Exterior Discount", pitch: "Hi! This is the automated coordinator for Smart Growth Painting. We are reaching out because we have two open slots for exterior siding painting in your neighborhood next week, which qualifies you for a 15% discount on materials." },
+    { topic: "Estimate Follow-up", pitch: "Hi, I am calling on behalf of Sample Painting Co. regarding the interior repaint quote we sent over on Friday. We wanted to see if you had any questions on the premium package or the prep scope?" },
+    { topic: "Summer Exterior Discount", pitch: "Hi! This is the automated coordinator for Sample Painting Co.. We are reaching out because we have two open slots for exterior siding painting in your neighborhood next week, which qualifies you for a 15% discount on materials." },
     { topic: "Warranty Check-In", pitch: "Hello! Our records show we completed your home painting project about 1 year ago. We're doing a quick check-in to make sure the exterior siding is holding up beautifully and your finish is still perfect." }
   ];
 
@@ -137,7 +137,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
       leadQualified: true,
       actionItems: ["Schedule onsite estimator for Thursday, 10:00 AM", "Pre-send deck staining care guide PDF"],
       transcript: [
-        { sender: "AI Receptionist", text: "Hello! Thank you for calling Smart Growth Painting. My name is Sophie. How can I make your property beautiful today?" },
+        { sender: "AI Receptionist", text: "Hello! Thank you for calling Sample Painting Co.. My name is Sophie. How can I make your property beautiful today?" },
         { sender: "Caller", text: "Hi, do you guys do deck wood restoration or staining? Our deck is starting to peel." },
         { sender: "AI Receptionist", text: "Yes, we certainly do! We specialize in deep wood cleaning, sanding, and applying premium solid or semi-transparent stains. Would you like to schedule a quick visual consultation?" },
         { sender: "Caller", text: "Yes please, this Thursday works best." }
@@ -155,7 +155,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
       leadQualified: true,
       actionItems: ["Snooze estimate task for 3 weeks", "Mark customer notes in LeadFlow CRM"],
       transcript: [
-        { sender: "AI Receptionist", text: "Hello, this is Sophie calling on behalf of Smart Growth Painting regarding your recent residential painting quote. I was checking in to see if you had any questions about our scope of work?" },
+        { sender: "AI Receptionist", text: "Hello, this is Sophie calling on behalf of Sample Painting Co. regarding your recent residential painting quote. I was checking in to see if you had any questions about our scope of work?" },
         { sender: "Caller", text: "Oh yes, the quote looks fine. We just had a delay with our landscape graders. Can we push the start date to late July?" },
         { sender: "AI Receptionist", text: "Absolutely, we can accommodate that! I will update our schedule and follow up with you in three weeks to finalize a firm start date." }
       ]
@@ -172,7 +172,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
       leadQualified: false,
       actionItems: ["Block phone number from routing pool"],
       transcript: [
-        { sender: "AI Receptionist", text: "Hello! Thank you for calling Smart Growth Painting. How can I help you?" },
+        { sender: "AI Receptionist", text: "Hello! Thank you for calling Sample Painting Co.. How can I help you?" },
         { sender: "Caller", text: "Hi, is the business owner available? We are offering discount general liability insurance..." }
       ]
     }
@@ -265,7 +265,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
   // Answer call
   const answerCallSim = async () => {
     setActiveCallLine("connected");
-    const activeScriptText = scripts.find(s => s.id === activeScriptId)?.content || customScript || "Hello! Thank you for calling Smart Growth Painting.";
+    const activeScriptText = scripts.find(s => s.id === activeScriptId)?.content || customScript || "Hello! Thank you for calling Sample Painting Co..";
     
     if (callDirection === "Inbound") {
       // Inbound: AI speaks the greeting first
@@ -291,7 +291,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
       
       setTimeout(() => {
         const campaignPitch = outboundCampaigns.find(c => c.topic === outboundCampaignTopic)?.pitch 
-          || "Hello! This is Sophie from Smart Growth Painting checking in regarding your estimate.";
+          || "Hello! This is Sophie from Sample Painting Co. checking in regarding your estimate.";
         setCallTranscript(prev => [
           ...prev,
           { sender: "AI Receptionist", text: campaignPitch }
@@ -338,7 +338,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
           script: activeScriptText,
           callType: callDirection.toLowerCase(),
           contactName: callContactName,
-          companyName: "Smart Growth Painting"
+          companyName: "Sample Painting Co."
         })
       });
 
@@ -512,7 +512,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
         body: JSON.stringify({
           script: customScript || baseScript,
           tone: scriptTone,
-          companyName: "Smart Growth Painting"
+          companyName: "Sample Painting Co."
         })
       });
 
@@ -1045,7 +1045,7 @@ export default function AIPhoneSystemModule({ leads, setLeads }: AIPhoneSystemMo
                     rows={4}
                     className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-3 text-xs leading-relaxed focus:outline-none focus:border-orange-500"
                   />
-                  <p className="text-[10px] text-slate-500 leading-tight">Write the custom reception script for Smart Growth Painting. Keep it natural and spoken-friendly.</p>
+                  <p className="text-[10px] text-slate-500 leading-tight">Write the custom reception script for Sample Painting Co.. Keep it natural and spoken-friendly.</p>
                 </div>
               )}
 

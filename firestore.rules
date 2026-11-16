@@ -1,9 +1,11 @@
 rules_version = '2';
+// All data is read and written by the Smart Growth Bot server through the
+// Firebase Admin SDK, which is not subject to these rules. Browsers only use
+// Firebase Authentication, so direct database access is denied to everyone.
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow read and write access to all operational collections
     match /{document=**} {
-      allow read, write: if true;
+      allow read, write: if false;
     }
   }
 }
