@@ -4,12 +4,11 @@ Do these in order. Use Stripe **test mode** first, run the beta, then switch to 
 
 ## 1. Firebase (sign-in + database)
 1. Open the Firebase console for project `supple-timer-cn56p` (or create a new project and replace `firebase-applet-config.json`).
-2. **Authentication → Sign-in method →** enable **Email/Password**.
+2. **Authentication → Sign-in method →** enable **Email/Password**. ✅ Done Nov 16, 2026.
 3. **Authentication → Settings → Authorized domains →** add your app domain (e.g. `app.smartgrowthbot.com`).
 4. **Authentication → Templates →** set the sender name to "Smart Growth Bot" on the verification and password-reset emails.
-5. **Firestore Database →** create the database in production mode (region `us-east4` or `nam5`).
-6. Deploy the locked-down rules: `npx firebase-tools deploy --only firestore:rules --project supple-timer-cn56p`
-   (or paste `firestore.rules` into Firestore → Rules → Publish).
+5. **Firestore Database →** the app uses the existing `ai-studio-smartgrowthpaint-556f9a43-…` database (set in `firebase-applet-config.json`). ✅ Deny-all rules published Nov 16, 2026.
+6. If you ever change rules, paste `firestore.rules` into that database's Security → Rules and publish.
 7. If hosting outside Google Cloud: **Project settings → Service accounts → Generate new private key**, and put the JSON in the `FIREBASE_SERVICE_ACCOUNT` secret.
 
 ## 2. Server secrets

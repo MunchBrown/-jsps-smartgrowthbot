@@ -11,14 +11,14 @@ import path from "path";
 
 let app: App | null = null;
 
-function projectIdFromWebConfig(): string | undefined {
+function webConfig(): any {
   try {
-    const p = path.join(process.cwd(), "firebase-applet-config.json");
-    return JSON.parse(fs.readFileSync(p, "utf8")).projectId;
+    return JSON.parse(fs.readFileSync(path.join(process.cwd(), "firebase-applet-config.json"), "utf8"));
   } catch {
-    return undefined;
+    return {};
   }
 }
+const projectIdFromWebConfig = (): string | undefined => webConfig().projectId;
 
 function getApp(): App {
   if (app) return app;
@@ -39,7 +39,7 @@ function getApp(): App {
 let db: Firestore | null = null;
 export function getFirestoreDb(): Firestore {
   if (!db) {
-    db = getFirestore(getApp(), process.env.FIRESTORE_DATABASE_ID || "(default)");
+    db = getFirestore(getApp(), process.env.FIRESTORE_DATABASE_ID || webConfig().firestoreDatabaseId || "(default)");
     db.settings({ ignoreUndefinedProperties: true });
   }
   return db;
