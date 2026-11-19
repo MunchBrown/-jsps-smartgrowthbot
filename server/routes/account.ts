@@ -1,9 +1,9 @@
 // Account, company (org) and team management.
 import { Router } from "express";
-import { requireAuth, requireOrg, requireRole, orgIdOf } from "../auth";
+import { requireAuth, requireOrg, requireRole, orgIdOf, isPlatformAdmin } from "../auth";
 import { store, paths, nowIso } from "../store";
 import { randomToken } from "../crypto";
-import { PLANS, planFor } from "../plans";
+import { PLANS, planFor, hasAccess, hasCompAccess } from "../plans";
 import { sendEmail } from "../integrations";
 import { config, APP_NAME } from "../config";
 import { str, email as emailField, oneOf } from "../validate";
@@ -13,11 +13,14 @@ router.use(["/api/me", "/api/onboarding", "/api/invites", "/api/org", "/api/team
 
 function publicOrg(org: any) {
   if (!org) return null;
-  const { id, name, plan, subscription, profile, integrations, createdAt, ownerUid } = org;
+  const { id, name, plan, subscription, profile, integrations, createdAt, ownerUid, comp } = org;
+  const beta = hasCompAccess(org);
   return {
     id,
     name,
-    plan: plan || null,
+    plan: plan || beta ? planFor(org).id : null,
+    hasAccess: hasAccess(org),
+    beta: beta ? { plan: comp.plan, until: comp.until || null } : null,
     ownerUid,
     createdAt,
     profile: profile || {},
@@ -41,7 +44,7 @@ router.get("/api/me", async (req, res) => {
     usage = { month, leads: leads.length, leadLimit: planFor(a.org).leadsPerMonth };
   }
   res.json({
-    user: { uid: a.uid, email: a.email, emailVerified: a.emailVerified, role: a.role || null },
+    user: { uid: a.uid, email: a.email, emailVerified: a.emailVerified, role: a.role || null, platformAdmin: isPlatformAdmin(a) },
     org: publicOrg(a.org),
     usage,
     pendingInvite: invite ? { orgName: invite.orgName, role: invite.role } : null,

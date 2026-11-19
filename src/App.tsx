@@ -21,6 +21,7 @@ import Estimates from "./components/live/Estimates";
 import Invoices from "./components/live/Invoices";
 import Inbox from "./components/live/Inbox";
 import Settings from "./components/live/Settings";
+import PlatformAdmin from "./components/live/PlatformAdmin";
 
 // Existing AI tools (live) and modules that still run on sample data (preview).
 import QuoteGeniusModule from "./components/QuoteGeniusModule";
@@ -34,7 +35,6 @@ import AIPhoneSystemModule from "./components/AIPhoneSystemModule";
 import CrewOptimizerModule from "./components/CrewOptimizerModule";
 import FinanceCommandModule from "./components/FinanceCommandModule";
 
-const ACCESS = new Set(["trialing", "active", "past_due"]);
 
 function useRoute() {
   const [path, setPath] = React.useState(location.pathname);
@@ -87,7 +87,7 @@ function Root() {
 
   if (!me.org) return me.pendingInvite ? <InviteScreen /> : <OnboardingScreen />;
 
-  if (!ACCESS.has(me.org.subscription.status)) {
+  if (!me.org.hasAccess) {
     const params = new URLSearchParams(location.search);
     return <ChoosePlanScreen notice={params.get("billing") === "canceled" ? "Checkout was canceled. Pick a plan whenever you're ready." : params.get("billing") === "success" ? "Payment received — your workspace will unlock in a few seconds. Refresh if it doesn't." : undefined} />;
   }
@@ -99,7 +99,7 @@ type TabId =
   | "dashboard" | "leads" | "schedule" | "estimates" | "invoices" | "inbox"
   | "quotegenius" | "businessos" | "govcontract"
   | "p-leadflow" | "p-reputation" | "p-funnel" | "p-clientconnect" | "p-phone" | "p-crew" | "p-finance"
-  | "settings";
+  | "settings" | "admin";
 
 const NAV: { section: string; items: [TabId, string][]; preview?: boolean }[] = [
   { section: "Run the business", items: [["dashboard", "Dashboard"], ["leads", "Leads"], ["schedule", "Schedule"], ["estimates", "Estimates"], ["invoices", "Invoices"], ["inbox", "Calls & texts"]] },
@@ -184,6 +184,9 @@ function Portal() {
               </div>
             ))}
             <button onClick={() => go("settings")} aria-current={tab === "settings" ? "page" : undefined} className={`w-full text-left px-3 py-2 rounded-lg text-sm cursor-pointer ${tab === "settings" ? "bg-orange-500 text-white font-semibold" : "text-slate-300 hover:text-white hover:bg-slate-800"}`}>Settings</button>
+            {me?.user.platformAdmin && (
+              <button onClick={() => go("admin")} aria-current={tab === "admin" ? "page" : undefined} className={`w-full text-left px-3 py-2 rounded-lg text-sm cursor-pointer ${tab === "admin" ? "bg-orange-500 text-white font-semibold" : "text-slate-300 hover:text-white hover:bg-slate-800"}`}>Platform admin</button>
+            )}
           </nav>
         </aside>
 
@@ -195,6 +198,7 @@ function Portal() {
           {tab === "invoices" && <Invoices />}
           {tab === "inbox" && <Inbox onOpenLead={(id) => go("leads", id)} />}
           {tab === "settings" && <Settings />}
+          {tab === "admin" && me?.user.platformAdmin && <PlatformAdmin />}
 
           {tab === "quotegenius" && <QuoteGeniusModule estimates={estimates} setEstimates={setEstimates} />}
           {tab === "businessos" && <BusinessOSModule />}

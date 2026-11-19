@@ -22,6 +22,23 @@ export function isPlanId(v: any): v is PlanId {
 // Subscription statuses that keep the workspace usable.
 export const ACCESS_STATUSES = new Set(["trialing", "active", "past_due"]);
 
+/**
+ * Free beta access granted by a platform admin. Works without Stripe and
+ * expires on compUntil (if set).
+ */
+export function hasCompAccess(org: any): boolean {
+  const c = org?.comp;
+  if (!c?.active) return false;
+  return !c.until || Date.parse(c.until) > Date.now();
+}
+
+export function hasAccess(org: any): boolean {
+  return ACCESS_STATUSES.has(org?.subscription?.status) || hasCompAccess(org);
+}
+
 export function planFor(org: any): Plan {
-  return PLANS[isPlanId(org?.plan) ? org.plan : "starter"];
+  // A paid subscription's plan wins; otherwise use the beta plan if one is active.
+  const paid = ACCESS_STATUSES.has(org?.subscription?.status);
+  const id = !paid && hasCompAccess(org) ? org.comp.plan : org?.plan;
+  return PLANS[isPlanId(id) ? id : "starter"];
 }

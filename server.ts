@@ -15,6 +15,7 @@ import { IntegrationError } from "./server/integrations";
 import accountRouter from "./server/routes/account";
 import billingRouter, { stripeWebhookRouter } from "./server/routes/billing";
 import integrationsRouter from "./server/routes/integrations";
+import adminRouter from "./server/routes/admin";
 import publicRouter from "./server/routes/public";
 import aiRouter from "./server/routes/ai";
 import coreRouter, { NotFound } from "./server/routes/core";
@@ -66,6 +67,7 @@ app.use("/api", rateLimit({ windowMs: 60 * 1000, limit: 300, standardHeaders: tr
 app.use(accountRouter);
 app.use(billingRouter);
 app.use(integrationsRouter);
+app.use(adminRouter);
 
 // AI tools: signed-in, subscribed companies only, with a daily allowance per company.
 const aiUsage = new Map<string, { day: string; count: number }>();

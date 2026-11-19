@@ -326,11 +326,18 @@ function Billing() {
     <div className="space-y-5 max-w-3xl">
       {params.get("billing") === "success" && <Notice tone="success">You're all set. Your plan is active.</Notice>}
       <Card>
-        <div className="flex justify-between items-center gap-3"><h3 className="font-semibold text-white">Your plan</h3><Badge tone={sub?.status === "active" || sub?.status === "trialing" ? "Won" : "Declined"}>{sub?.status?.replace("_", " ")}</Badge></div>
+        <div className="flex justify-between items-center gap-3"><h3 className="font-semibold text-white">Your plan</h3><Badge tone={sub?.status === "active" || sub?.status === "trialing" || me?.org?.beta ? "Won" : "Declined"}>{sub?.status === "none" && me?.org?.beta ? "free beta" : sub?.status?.replace("_", " ")}</Badge></div>
         <p className="text-sm text-slate-300 mt-2">{plan ? `${plan.name} — $${plan.priceMonthly}/month · ${plan.seats} seat(s) · ${plan.leadsPerMonth} leads/month` : "No plan yet."}</p>
         {sub?.trialEnd && sub.status === "trialing" && <p className="text-sm text-slate-400 mt-1">Trial ends {new Date(sub.trialEnd).toLocaleDateString()}.</p>}
         {sub?.cancelAtPeriodEnd && sub.currentPeriodEnd && <p className="text-sm text-amber-300 mt-1">Cancels on {new Date(sub.currentPeriodEnd).toLocaleDateString()}.</p>}
-        {admin && <Button className="mt-4" variant="secondary" busy={a.busy === "portal"} onClick={() => go("portal", "/api/billing/portal")}>Change plan, update card or cancel</Button>}
+        {me?.org?.beta && <p className="text-sm text-emerald-300 mt-1">Free beta access{me.org.beta.until ? ` until ${new Date(me.org.beta.until).toLocaleDateString()}` : ""}. Thanks for helping us build it.</p>}
+        {admin && sub?.status !== "none" && <Button className="mt-4" variant="secondary" busy={a.busy === "portal"} onClick={() => go("portal", "/api/billing/portal")}>Change plan, update card or cancel</Button>}
+        {admin && sub?.status === "none" && me?.org?.plan && (
+          <Button className="mt-4" variant="secondary" busy={a.busy === "checkout"} onClick={() => a.run("checkout", async () => {
+            const { url } = await api<{ url: string }>("/api/billing/checkout", { body: { plan: me!.org!.plan } });
+            window.location.href = url;
+          })}>Start a paid plan</Button>
+        )}
       </Card>
       <Card>
         <div className="flex justify-between items-center gap-3"><h3 className="font-semibold text-white">Get paid online — Stripe</h3><Status on={!!connect?.chargesEnabled} label="Accepting card payments" /></div>

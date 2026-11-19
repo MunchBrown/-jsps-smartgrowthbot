@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { getAdminAuth } from "./firebase";
 import { config } from "./config";
 import { store, paths } from "./store";
-import { ACCESS_STATUSES } from "./plans";
+import { hasAccess } from "./plans";
 
 export type Role = "owner" | "admin" | "member";
 
@@ -69,8 +69,7 @@ export function requireOrg(req: Request, res: Response, next: NextFunction) {
 }
 
 export function requireSubscription(req: Request, res: Response, next: NextFunction) {
-  const status = req.auth?.org?.subscription?.status;
-  if (!ACCESS_STATUSES.has(status)) {
+  if (!hasAccess(req.auth?.org)) {
     res.status(402).json({ error: "Start your free trial or update billing to continue.", code: "NO_SUBSCRIPTION" });
     return;
   }
@@ -90,4 +89,19 @@ export function requireRole(...roles: Role[]) {
 /** Narrow helper for handlers that run after requireOrg. */
 export function orgIdOf(req: Request): string {
   return req.auth!.orgId!;
+}
+
+/** Platform admins (you, the Smart Growth Bot operator) by verified email. */
+export function isPlatformAdmin(auth?: AuthContext): boolean {
+  if (!auth?.email || !auth.emailVerified) return false;
+  const list = (process.env.PLATFORM_ADMIN_EMAILS || "").split(",").map((e) => e.trim().toLowerCase()).filter(Boolean);
+  return list.includes(auth.email.toLowerCase());
+}
+
+export function requirePlatformAdmin(req: Request, res: Response, next: NextFunction) {
+  if (!isPlatformAdmin(req.auth)) {
+    res.status(403).json({ error: "Platform admins only." });
+    return;
+  }
+  next();
 }

@@ -299,6 +299,27 @@ try {
     assert.match(r.headers.get("location") || "", /google=error/);
   });
 
+  await step("platform admin can give a company free beta access without Stripe", async () => {
+    process.env.PLATFORM_ADMIN_EMAILS = "owner@acmepainting.com";
+    const beta = await call("POST", "/api/onboarding", { token: "test:beta1:beta@newpainter.com", body: { companyName: "Beta Painters" } });
+    const betaId = beta.json.org.id;
+    assert.equal((await call("GET", "/api/leads", { token: "test:beta1:beta@newpainter.com" })).status, 402);
+    assert.equal((await call("GET", "/api/admin/orgs", { token: OTHER })).status, 403, "non-admins are refused");
+    const list = await call("GET", "/api/admin/orgs", { token: OWNER });
+    assert.ok(list.json.find((o: any) => o.id === betaId));
+    const g = await call("POST", `/api/admin/orgs/${betaId}/beta`, { token: OWNER, body: { plan: "professional", days: 90 } });
+    assert.equal(g.status, 200, g.text);
+    const me = (await call("GET", "/api/me", { token: "test:beta1:beta@newpainter.com" })).json;
+    assert.equal(me.org.hasAccess, true);
+    assert.equal(me.org.plan, "professional");
+    assert.equal((await call("GET", "/api/leads", { token: "test:beta1:beta@newpainter.com" })).status, 200);
+    await call("DELETE", `/api/admin/orgs/${betaId}/beta`, { token: OWNER });
+    assert.equal((await call("GET", "/api/leads", { token: "test:beta1:beta@newpainter.com" })).status, 402);
+    await store.set(paths.org(betaId), { comp: { active: true, plan: "starter", until: "2020-01-01T00:00:00.000Z" } });
+    assert.equal((await call("GET", "/api/leads", { token: "test:beta1:beta@newpainter.com" })).status, 402, "expired beta locks again");
+    process.env.PLATFORM_ADMIN_EMAILS = "";
+  });
+
   await step("unknown API routes return 404 JSON", async () => {
     const r = await call("GET", "/api/nope", { token: OWNER });
     assert.equal(r.status, 404);

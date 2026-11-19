@@ -13,11 +13,13 @@ export interface Plan {
 }
 
 export interface Me {
-  user: { uid: string; email: string; emailVerified: boolean; role: "owner" | "admin" | "member" | null };
+  user: { uid: string; email: string; emailVerified: boolean; role: "owner" | "admin" | "member" | null; platformAdmin?: boolean };
   org: null | {
     id: string;
     name: string;
     plan: Plan["id"] | null;
+    hasAccess: boolean;
+    beta: null | { plan: Plan["id"]; until: string | null };
     profile: any;
     integrations: any;
     subscription: { status: string; trialEnd: string | null; currentPeriodEnd: string | null; cancelAtPeriodEnd: boolean };

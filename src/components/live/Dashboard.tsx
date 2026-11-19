@@ -19,6 +19,9 @@ export default function Dashboard({ go }: { go: (tab: string, leadId?: string) =
   return (
     <div>
       <PageHeader title={`Welcome${me?.org?.profile?.ownerName ? ", " + me.org.profile.ownerName.split(" ")[0] : ""}`} subtitle={me?.org?.name} />
+      {me?.org?.beta && sub?.status === "none" && (
+        <p className="text-sm text-emerald-300 mb-4">Free beta access{me.org.beta.until ? ` until ${new Date(me.org.beta.until).toLocaleDateString("en-US", { month: "long", day: "numeric" })}` : ""}.</p>
+      )}
       {sub?.status === "trialing" && sub.trialEnd && (
         <p className="text-sm text-slate-400 mb-4">Free trial ends {new Date(sub.trialEnd).toLocaleDateString("en-US", { month: "long", day: "numeric" })}.</p>
       )}

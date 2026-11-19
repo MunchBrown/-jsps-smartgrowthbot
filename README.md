@@ -34,7 +34,7 @@ Modules still on sample data are grouped under **Preview — sample data** in th
 npm install
 cp .env.example .env    # fill in at least GEMINI_API_KEY and ENCRYPTION_KEY
 npm run dev             # http://localhost:3000
-npm test                # 26 end-to-end server checks against an in-memory database
+npm test                # 27 end-to-end server checks against an in-memory database
 npm run lint && npm run build
 ```
 
