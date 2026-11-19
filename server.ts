@@ -7,7 +7,7 @@ import express from "express";
 import path from "path";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-import { config, assertSafeConfig, APP_NAME } from "./server/config";
+import { config, assertSafeConfig, APP_NAME, missingSettings } from "./server/config";
 import { requireAuth, requireOrg, requireSubscription } from "./server/auth";
 import { planFor } from "./server/plans";
 import { ValidationError } from "./server/validate";
@@ -58,7 +58,8 @@ app.use(publicRouter);
 app.use(express.json({ limit: "8mb" }));
 
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", service: APP_NAME, time: new Date().toISOString() });
+  const missing = missingSettings();
+  res.json({ status: missing.length ? "needs-setup" : "ok", service: APP_NAME, missing, time: new Date().toISOString() });
 });
 
 // General API rate limit per IP (generous; protects against abuse).

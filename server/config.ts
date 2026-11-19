@@ -49,6 +49,18 @@ export function assertSafeConfig() {
   if (config.isProd) {
     if (config.testAuth) throw new Error("ALLOW_TEST_AUTH must never be enabled in production.");
     if (config.memoryStore) throw new Error("DATA_STORE=memory must never be used in production.");
-    if (!config.encryptionKey) throw new Error("ENCRYPTION_KEY is required in production.");
+    // Missing ENCRYPTION_KEY doesn't stop startup (so a first deploy can come up
+    // before secrets are added), but every feature that stores secrets refuses
+    // to run until it is set — see crypto.ts. /api/health reports it.
   }
+}
+
+/** Settings still missing in production, shown by /api/health. Names only, never values. */
+export function missingSettings(): string[] {
+  const required: [string, string][] = [
+    ["APP_URL", process.env.APP_URL || ""],
+    ["ENCRYPTION_KEY", config.encryptionKey],
+    ["GEMINI_API_KEY", process.env.GEMINI_API_KEY || ""],
+  ];
+  return required.filter(([, v]) => !v).map(([k]) => k);
 }
