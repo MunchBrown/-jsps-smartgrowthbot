@@ -6,6 +6,7 @@ substitutions:
   _REGION: us-east1
   _SERVICE: smartgrowthbot-app
   _IMAGE: us-east1-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/smartgrowthbot/smartgrowthbot-app
+  _APP_URL: https://smartgrowthbot-app-849310988206.us-east1.run.app
 
 steps:
   - id: Build
@@ -19,8 +20,18 @@ steps:
   - id: Deploy
     name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
     entrypoint: gcloud
-    # Keeps the service's existing settings (environment variables, scaling).
-    args: ["run", "deploy", "${_SERVICE}", "--image", "${_IMAGE}:${COMMIT_SHA}", "--region", "${_REGION}", "--quiet"]
+    # Settings come from here and from Secret Manager (this project doesn't
+    # allow editing the service's variables in the console). Secret values are
+    # never stored in the repo: create them once in Secret Manager.
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=${_IMAGE}:${COMMIT_SHA}
+      - --region=${_REGION}
+      - --update-env-vars=APP_URL=${_APP_URL}
+      - --update-secrets=ENCRYPTION_KEY=ENCRYPTION_KEY:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest,PLATFORM_ADMIN_EMAILS=PLATFORM_ADMIN_EMAILS:latest
+      - --quiet
 
 images:
   - "${_IMAGE}:${COMMIT_SHA}"
