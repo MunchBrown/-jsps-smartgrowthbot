@@ -27,3 +27,5 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  # The trigger may pass extra substitutions left from the console setup.
+  substitutionOption: ALLOW_LOOSE
