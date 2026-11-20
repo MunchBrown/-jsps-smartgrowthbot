@@ -158,7 +158,7 @@ const SEED_CAMPAIGNS: FunnelCampaign[] = [
     },
     assets: {
       adFacebook: {
-        primaryText: "🧑‍🍳 Tired of your outdated, dark oak kitchen cabinets, but dread the $25,000 cost of a full remodel? \n\nPaintingPro AI specializes in ultra-smooth, factory-grade cabinet refinishing for a fraction of the cost! \n\n✨ ACT NOW: Book your refinishing this month and get $400 OFF plus a FREE Soft-Close Hinge upgrade! Transform your kitchen in just 4 days with zero dust and zero hassle.",
+        primaryText: "🧑‍🍳 Tired of your outdated, dark oak kitchen cabinets, but dread the $25,000 cost of a full remodel? \n\nSmart Growth Bot specializes in ultra-smooth, factory-grade cabinet refinishing for a fraction of the cost! \n\n✨ ACT NOW: Book your refinishing this month and get $400 OFF plus a FREE Soft-Close Hinge upgrade! Transform your kitchen in just 4 days with zero dust and zero hassle.",
         headline: "🚨 $400 Off Cabinet Refinishing + Free Soft-Close Hinges!",
         cta: "Book Free Consultation",
         imagePreset: "kitchen-cabinets"
@@ -183,7 +183,7 @@ const SEED_CAMPAIGNS: FunnelCampaign[] = [
         painPoint3Desc: "We remove your doors to spray them in our custom booth. Your kitchen remains clean, functional, and dust-free.",
         socialProofTitle: "What Your Neighbors Are Saying",
         socialProofReviewer1: "Martha K. from Oak Hills",
-        socialProofText1: "\"I was skeptical about painting cabinets, but PaintingPro AI exceeded every dream! It feels like a brand-new custom kitchen for under $4,000!\"",
+        socialProofText1: "\"I was skeptical about painting cabinets, but Smart Growth Bot exceeded every dream! It feels like a brand-new custom kitchen for under $4,000!\"",
         socialProofReviewer2: "David L. from Greenbrier",
         socialProofText2: "\"Incredible service! Clean, professional, on time. The soft-close hinges make the kitchen feel incredibly luxurious. Highly recommend.\"",
         faq1Q: "How long does the entire refinishing process take?",
@@ -560,7 +560,7 @@ export default function AIFunnelBuilderModule({ leads, setLeads }: AIFunnelBuild
       const cleanService = briefServiceType.toLowerCase();
       const generatedFallback: FunnelAssets = {
         adFacebook: {
-          primaryText: `🏡 Looking for pristine ${briefServiceType} but worried about sloppy contractors, messy splatters, and infinite delays? \n\nPaintingPro AI provides absolute clean-prep guarantees! We handle the heavy lifting, prep with precision vacuums, and spray factory-grade finishes. \n\n🎉 SPECIAL OFFER: ${briefOffer}. Claim this limited consult coupon before our calendar is fully booked!`,
+          primaryText: `🏡 Looking for pristine ${briefServiceType} but worried about sloppy contractors, messy splatters, and infinite delays? \n\nSmart Growth Bot provides absolute clean-prep guarantees! We handle the heavy lifting, prep with precision vacuums, and spray factory-grade finishes. \n\n🎉 SPECIAL OFFER: ${briefOffer}. Claim this limited consult coupon before our calendar is fully booked!`,
           headline: `🛡️ Premium ${briefServiceType} | Save Big with Our Special Offer!`,
           cta: "Claim Limited Offer",
           imagePreset: cleanService.includes("cabinet") ? "kitchen-cabinets" : (cleanService.includes("exterior") ? "exterior-house" : "living-room")
@@ -576,7 +576,7 @@ export default function AIFunnelBuilderModule({ leads, setLeads }: AIFunnelBuild
           heroTitle: `Flawless ${briefServiceType} Crafted with Zero Dust and Total Peace of Mind`,
           heroSubtitle: `Lock in your special promotion: "${briefOffer}" and enjoy a spectacular color transition carried out by clean professional craftsmen.`,
           heroCta: "Claim Coupon & Book Diagnostic Estimate",
-          painPointTitle: "How PaintingPro AI Redefines local Service",
+          painPointTitle: "How Smart Growth Bot Redefines local Service",
           painPoint1Title: "Dust-Controlled Prep Work",
           painPoint1Desc: "No messy white powder floating in your bedrooms. We shield all ventilation systems and filter sanders.",
           painPoint2Title: "Premium Resilient Finishes",
@@ -1234,7 +1234,7 @@ export default function AIFunnelBuilderModule({ leads, setLeads }: AIFunnelBuild
                       </div>
                       <div className="space-y-0.5">
                         <div className="font-extrabold text-[13px] hover:underline flex items-center gap-1 cursor-pointer">
-                          PaintingPro AI
+                          Smart Growth Bot
                           <CheckCircle2 className="h-3.5 w-3.5 fill-blue-500 text-slate-950" />
                         </div>
                         <div className="text-[11px] text-slate-400 flex items-center gap-1">
@@ -1478,7 +1478,7 @@ export default function AIFunnelBuilderModule({ leads, setLeads }: AIFunnelBuild
                         <header className="relative z-10 px-6 py-4.5 flex justify-between items-center border-b border-slate-900/60 backdrop-blur-md">
                           <div className="flex items-center gap-2">
                             <div className="h-7 w-7 rounded-lg bg-orange-500 flex items-center justify-center font-serif text-white font-black text-sm">P</div>
-                            <span className="font-extrabold text-[12px] tracking-tight text-white font-serif">PaintingPro AI</span>
+                            <span className="font-extrabold text-[12px] tracking-tight text-white font-serif">Smart Growth Bot</span>
                           </div>
                           
                           <div className="flex items-center gap-1.5">
@@ -1678,7 +1678,7 @@ export default function AIFunnelBuilderModule({ leads, setLeads }: AIFunnelBuild
                         <footer className="relative z-10 px-6 py-8 border-t border-slate-900 text-center space-y-2 bg-[#080d19]">
                           <div className="flex justify-center items-center gap-2">
                             <div className="h-6 w-6 rounded bg-orange-500 flex items-center justify-center font-serif text-white font-black text-xs">P</div>
-                            <span className="font-bold text-[11px] font-serif text-white">PaintingPro AI™ Franchise Network</span>
+                            <span className="font-bold text-[11px] font-serif text-white">Smart Growth Bot™ Franchise Network</span>
                           </div>
                           <p className="text-[9px] text-slate-500 max-w-sm mx-auto leading-normal">
                             All jobs executed by certified licensed franchisees. Standard warranties mapped in corporate SOP guides. Fully licensed, bonded and locally managed.

@@ -20,7 +20,7 @@ const INITIAL_REVIEWS: Review[] = [
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
     platform: "Google",
     rating: 5,
-    content: "Smart Growth Painting painted our entire 2-story interior home in York. Their crew leader Carlos was punctual, ultra-clean with drop cloths, and finished 1 day ahead of schedule! The Sherwin-Williams Duration finish looks flawless.",
+    content: "Sample Painting Co. painted our entire 2-story interior home in York. Their crew leader Carlos was punctual, ultra-clean with drop cloths, and finished 1 day ahead of schedule! The Sherwin-Williams Duration finish looks flawless.",
     date: "2026-08-16",
     replied: true,
     replyText: "Thank you so much Sarah! It was a pleasure painting your home. Carlos and the crew loved working with you!",
@@ -96,10 +96,10 @@ const INITIAL_VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
     thumbnailUrl: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&auto=format&fit=crop&q=80",
     durationSeconds: 42,
-    transcript: "Hey everyone! I just wanted to show off the amazing job Smart Growth Painting did on our living room and kitchen walls. Zero mess, super friendly crew, and the paint finish is literally perfection!",
+    transcript: "Hey everyone! I just wanted to show off the amazing job Sample Painting Co. did on our living room and kitchen walls. Zero mess, super friendly crew, and the paint finish is literally perfection!",
     date: "2026-08-15",
     approved: true,
-    embedCode: `<iframe src="https://paintingpro.ai/embed/video/VID-01" width="360" height="640" frameborder="0"></iframe>`
+    embedCode: `<iframe src="https://samplepainting.example/embed/video/VID-01" width="360" height="640" frameborder="0"></iframe>`
   },
   {
     id: "VID-02",
@@ -110,10 +110,10 @@ const INITIAL_VIDEO_TESTIMONIALS: VideoTestimonial[] = [
     videoUrl: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
     thumbnailUrl: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&auto=format&fit=crop&q=80",
     durationSeconds: 58,
-    transcript: "As a general contractor, finding painters who hit deadlines without sacrificing quality is tough. PaintingPro AI handled 4,500 sqft in 4 days. Unbelievable efficiency.",
+    transcript: "As a general contractor, finding painters who hit deadlines without sacrificing quality is tough. Smart Growth Bot handled 4,500 sqft in 4 days. Unbelievable efficiency.",
     date: "2026-08-10",
     approved: true,
-    embedCode: `<iframe src="https://paintingpro.ai/embed/video/VID-02" width="360" height="640" frameborder="0"></iframe>`
+    embedCode: `<iframe src="https://samplepainting.example/embed/video/VID-02" width="360" height="640" frameborder="0"></iframe>`
   }
 ];
 
@@ -166,7 +166,7 @@ const INITIAL_WIDGETS: ReviewWidget[] = [
     minRatingFilter: 4,
     theme: "Dark",
     primaryColor: "#F97316",
-    embedCode: `<script src="https://paintingpro.ai/widget.js" id="wid-1"></script>`
+    embedCode: `<script src="https://samplepainting.example/widget.js" id="wid-1"></script>`
   },
   {
     id: "wid-2",
@@ -175,7 +175,7 @@ const INITIAL_WIDGETS: ReviewWidget[] = [
     minRatingFilter: 5,
     theme: "Light",
     primaryColor: "#10B981",
-    embedCode: `<script src="https://paintingpro.ai/widget.js" id="wid-2"></script>`
+    embedCode: `<script src="https://samplepainting.example/widget.js" id="wid-2"></script>`
   }
 ];
 
@@ -187,7 +187,7 @@ const INITIAL_LISTINGS: DirectoryListing[] = [
     napConsistencyScore: 100,
     address: "100 Franchise Way, York, PA 17401",
     phone: "(717) 555-PAINT",
-    website: "https://smartgrowth.paintingpro.ai",
+    website: "https://samplepainting.example",
     reviewsCount: 148,
     avgRating: 4.9,
     lastSynced: "10 mins ago"
@@ -199,7 +199,7 @@ const INITIAL_LISTINGS: DirectoryListing[] = [
     napConsistencyScore: 100,
     address: "100 Franchise Way, York, PA 17401",
     phone: "(717) 555-PAINT",
-    website: "https://smartgrowth.paintingpro.ai",
+    website: "https://samplepainting.example",
     reviewsCount: 32,
     avgRating: 5.0,
     lastSynced: "1 hour ago"
@@ -211,7 +211,7 @@ const INITIAL_LISTINGS: DirectoryListing[] = [
     napConsistencyScore: 95,
     address: "100 Franchise Way, York, PA 17401",
     phone: "(717) 555-PAINT",
-    website: "https://smartgrowth.paintingpro.ai",
+    website: "https://samplepainting.example",
     reviewsCount: 18,
     avgRating: 4.8,
     lastSynced: "2 hours ago"
@@ -223,7 +223,7 @@ const INITIAL_LISTINGS: DirectoryListing[] = [
     napConsistencyScore: 88,
     address: "100 Franchise Way, York, PA 17401",
     phone: "(717) 555-PAINT",
-    website: "https://smartgrowth.paintingpro.ai",
+    website: "https://samplepainting.example",
     reviewsCount: 24,
     avgRating: 4.8,
     lastSynced: "1 day ago"
@@ -236,14 +236,14 @@ const INITIAL_SETTINGS: ReputationSettings = {
   dripMode: true,
   aiTone: "Professional & Grateful",
   autoRespondMinRating: 4,
-  customReviewLink: "https://paintingpro.ai/r/smart-growth-painting",
-  smsTemplate: "Hi {ClientName}, thanks for choosing Smart Growth Painting! Could you take 30 seconds to share your feedback? {ReviewLink}",
-  emailSubject: "How did we do? Share your feedback with Smart Growth Painting!",
+  customReviewLink: "https://samplepainting.example/r/smart-growth-painting",
+  smsTemplate: "Hi {ClientName}, thanks for choosing Sample Painting Co.! Could you take 30 seconds to share your feedback? {ReviewLink}",
+  emailSubject: "How did we do? Share your feedback with Sample Painting Co.!",
   emailTemplate: "Hello {ClientName},\n\nThank you for trusting us with your {ProjectName}. We would love it if you could leave a brief Google review.\n\nClick here: {ReviewLink}",
-  whatsAppTemplate: "Hi {ClientName}! Smart Growth Painting here. Hope you love your fresh paint! Leave us a quick star rating here: {ReviewLink}",
-  qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://paintingpro.ai/r/smart-growth-painting",
+  whatsAppTemplate: "Hi {ClientName}! Sample Painting Co. here. Hope you love your fresh paint! Leave us a quick star rating here: {ReviewLink}",
+  qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://samplepainting.example/r/smart-growth-painting",
   googleProfileConnected: true,
-  googleProfileAccount: "franchise.sales@paintingpro.ai (Location ID: #PA-YORK-99)",
+  googleProfileAccount: "franchise.sales@samplepainting.example (Location ID: #PA-YORK-99)",
   facebookConnected: true
 };
 
@@ -833,7 +833,7 @@ export default function ReputationModule() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => {
-                  navigator.clipboard.writeText("https://paintingpro.ai/video-record/johnny-sons");
+                  navigator.clipboard.writeText("https://samplepainting.example/video-record/johnny-sons");
                   showToast("Copied Video Recording Share Link!");
                 }}
                 className="bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-500/40 text-xs font-bold px-3 py-2 rounded-xl transition flex items-center gap-1 cursor-pointer"

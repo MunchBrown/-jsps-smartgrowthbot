@@ -86,15 +86,15 @@ export default function GovContractingModule() {
 
   // Company Profile State (SAM.gov Dashboard)
   const [companyProfile, setCompanyProfile] = useState({
-    name: "Smart Growth Painting Services",
-    uei: "UEI18H37KA84",
-    cage: "8Z9K4",
-    samExpiration: "2027-04-12",
-    bondingSingle: 650000,
-    bondingAggregate: 2500000,
-    certifications: ["Service-Disabled Veteran-Owned Small Business (SDVOSB)", "HUBZone", "Total Small Business"],
-    coiExpiration: "2027-01-30",
-    hasActiveSOP: true
+    name: "[Your company name]",
+    uei: "[Your UEI]",
+    cage: "[Your CAGE code]",
+    samExpiration: "[Not set]",
+    bondingSingle: 0,
+    bondingAggregate: 0,
+    certifications: [] as string[],
+    coiExpiration: "[Not set]",
+    hasActiveSOP: false
   });
 
   // Prevailing Wages Lookups & Certified Payroll Tracker
@@ -444,14 +444,14 @@ export default function GovContractingModule() {
 
 Hello,
 
-My name is Operations Coordinator, representing Smart Growth Painting Services. We are bidding on several municipal and federal painting opportunities, including upcoming military facility exterior coating contracts under NAICS 238320 in the local region.
+My name is [Your name], representing [Your company name]. We are bidding on several municipal and federal painting opportunities, including upcoming military facility exterior coating contracts under NAICS 238320 in the local region.
 
 We noticed your firm is certified as a HUBZone painting specialist. We are looking to align with high-quality subcontractor teams to meet the Davis-Bacon prevailing wage compliance and CPARS performance metrics on this project. 
 
 If your team has current bonding capacity and up-to-date certificates of insurance (COI), let's schedule a 10-minute discovery call to explore a joint-venture / subcontracting agreement.
 
 Best regards,
-Smart Growth Painting Operating Portal
+[Your company name]
 Government Contracting Division
 UEI: ${companyProfile.uei} | CAGE: ${companyProfile.cage}`);
     }, 800);
@@ -527,7 +527,7 @@ UEI: ${companyProfile.uei} | CAGE: ${companyProfile.cage}`);
               </span>
             ) : (
               <span className="text-[10px] font-mono text-slate-400 bg-slate-800/60 px-2.5 py-1 rounded-full border border-slate-700/50">
-                HIGH-FIDELITY OFFLINE BENCH
+                SAMPLE BIDS — add SAM_API_KEY for live SAM.gov data
               </span>
             )}
           </div>
@@ -1329,7 +1329,7 @@ UEI: ${companyProfile.uei} | CAGE: ${companyProfile.cage}`);
 
               <div className="bg-emerald-950/10 border border-emerald-900/20 p-3 rounded-xl flex gap-2 items-center">
                 <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                <span className="text-[10px] text-slate-300">Entity is compliant and actively listed for federal bidding.</span>
+                <span className="text-[10px] text-slate-300">Sample view. Check your real status at SAM.gov.</span>
               </div>
             </div>
 

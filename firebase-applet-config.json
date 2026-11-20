@@ -5,5 +5,6 @@
   "authDomain": "supple-timer-cn56p.firebaseapp.com",
   "storageBucket": "supple-timer-cn56p.firebasestorage.app",
   "messagingSenderId": "849310988206",
-  "measurementId": ""
+  "measurementId": "",
+  "firestoreDatabaseId": "ai-studio-smartgrowthpaint-556f9a43-4879-4b7d-b2ba-c0f430e60728"
 }

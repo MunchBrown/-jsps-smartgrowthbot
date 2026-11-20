@@ -78,7 +78,7 @@ export default function ClientConnectModule() {
   const [messages, setMessages] = useState<{ [key: string]: any[] }>({
     t1: [
       { sender: "customer", text: "Hello! I saw your Google listing and want to paint my living room.", time: "10:30 AM", channel: "SMS" },
-      { sender: "ai-assistant", text: "Hi Sarah! Welcome to PaintingPro. I scored your project details. We would love to help. What is your estimated timeline?", time: "10:31 AM", channel: "AI Reply" },
+      { sender: "ai-assistant", text: "Hi Sarah! Welcome to Smart Growth Bot. I scored your project details. We would love to help. What is your estimated timeline?", time: "10:31 AM", channel: "AI Reply" },
       { sender: "customer", text: "Can you guys start this Thursday? I want to get the front porch done.", time: "10:45 AM", channel: "SMS" }
     ],
     t2: [
@@ -135,7 +135,7 @@ export default function ClientConnectModule() {
 
   // Receptionist general prompt
   const [receptionistPrompt, setReceptionistPrompt] = useState(
-    "You are a highly efficient, multi-channel AI Receptionist for PaintingPro AI. Guard customer conversations across Yelp, Angi, Google, Facebook, SMS, and Email. Always cross-reference SSPC preps and regional Davis-Bacon compliance. Your key goal is to capture high-quality project specifications, schedule estimators, and pivot third-party directory leads to direct SMS lines to bypass lead commission fees."
+    "You are a highly efficient, multi-channel AI Receptionist for Smart Growth Bot. Guard customer conversations across Yelp, Angi, Google, Facebook, SMS, and Email. Always cross-reference SSPC preps and regional Davis-Bacon compliance. Your key goal is to capture high-quality project specifications, schedule estimators, and pivot third-party directory leads to direct SMS lines to bypass lead commission fees."
   );
 
   // Connected Sources integrations state
@@ -337,7 +337,7 @@ export default function ClientConnectModule() {
         },
         { 
           sender: "ai-assistant", 
-          text: `Hi ${selectedThread.name}! This is Carlos from Smart Growth Painting. Moving our chat here to text directly about your $${selectedThread.budget.toLocaleString()} painting estimate. Is this phone line best for SMS?`, 
+          text: `Hi ${selectedThread.name}! This is Carlos from Sample Painting Co.. Moving our chat here to text directly about your $${selectedThread.budget.toLocaleString()} painting estimate. Is this phone line best for SMS?`, 
           time: "Just now", 
           channel: "Direct SMS" 
         }
@@ -392,7 +392,7 @@ export default function ClientConnectModule() {
       
       // High-fidelity fallback based on channel and directive
       if (selectedThread.originalChannel === "Yelp") {
-        setTypedReply(`Hi ${selectedThread.name}! This is Carlos from Smart Growth Painting. I saw your Yelp request about the overnight front exterior quote. Under SSPC standards, overnight metal/masonry painting is highly feasible. Our standard commercial exterior projects range between $4,500 and $9,500 depending on prep. Shall we set up an estimator visits to inspect the brick on-site?`);
+        setTypedReply(`Hi ${selectedThread.name}! This is Carlos from Sample Painting Co.. I saw your Yelp request about the overnight front exterior quote. Under SSPC standards, overnight metal/masonry painting is highly feasible. Our standard commercial exterior projects range between $4,500 and $9,500 depending on prep. Shall we set up an estimator visits to inspect the brick on-site?`);
       } else if (selectedThread.originalChannel === "Google Business Profile") {
         setTypedReply(`Hi ${selectedThread.name}! Thanks for reaching out via our Google Profile. Excellent question on brick houses. We always utilize breathable premium mineral silicate coatings to avoid trapping interior vapor moisture in the brick. Let's schedule an estimator to look at your brickwork this week!`);
       } else if (selectedThread.originalChannel === "Angi") {
@@ -1094,13 +1094,13 @@ export default function ClientConnectModule() {
                 <p className="text-xs text-slate-400">Embed this light lightweight HTML5 web-chat widget on your homepage or Squarespace site to pipe leads directly into the unified portal.</p>
                 
                 <div className="bg-slate-900 p-2.5 rounded-xl border border-slate-850 font-mono text-[9px] text-slate-300 select-all overflow-x-auto whitespace-nowrap">
-                  {`<!-- PaintingPro Inbox Capture -->\n<script src="https://cdn.paintingpro.ai/widget.js?id=UEI18H37KA84"></script>`}
+                  {`<!-- Smart Growth Bot Inbox Capture -->\n<script src="https://cdn.samplepainting.example/widget.js?id=UEI18H37KA84"></script>`}
                 </div>
               </div>
 
               <button 
                 onClick={() => {
-                  navigator.clipboard.writeText(`<script src="https://cdn.paintingpro.ai/widget.js?id=UEI18H37KA84"></script>`);
+                  navigator.clipboard.writeText(`<script src="https://cdn.samplepainting.example/widget.js?id=UEI18H37KA84"></script>`);
                   setWebhookUrlCopied(true);
                   setTimeout(() => setWebhookUrlCopied(false), 2000);
                 }}
@@ -1132,7 +1132,7 @@ export default function ClientConnectModule() {
             </div>
 
             <p className="text-xs text-slate-400">
-              By connecting your {showConnectModal.name} credentials, PaintingPro AI will install a secure webhook listener that transcribes incoming user inquiries straight to this console.
+              By connecting your {showConnectModal.name} credentials, Smart Growth Bot will install a secure webhook listener that transcribes incoming user inquiries straight to this console.
             </p>
 
             <div className="space-y-1.5">
@@ -1148,7 +1148,7 @@ export default function ClientConnectModule() {
 
             <div className="bg-slate-950 p-3 rounded-xl border border-slate-850 text-[10px] text-slate-500 font-mono space-y-1">
               <span className="block text-slate-400 font-bold">Authorized Redirect URL</span>
-              <span className="block text-slate-400 truncate">https://api.paintingpro.ai/auth/{showConnectModal.id}/callback</span>
+              <span className="block text-slate-400 truncate">https://api.samplepainting.example/auth/{showConnectModal.id}/callback</span>
             </div>
 
             <div className="pt-3 flex gap-2.5">

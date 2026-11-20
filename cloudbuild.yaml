@@ -1,0 +1,44 @@
+# Cloud Build: build the Docker image and deploy it to Cloud Run.
+# Used by the Cloud Build trigger on pushes to the deploy branch.
+# (The image name is fixed here because the GitHub repo name starts with a
+# hyphen, which Docker does not allow in image names.)
+substitutions:
+  _REGION: us-east1
+  _SERVICE: smartgrowthbot-app
+  _IMAGE: us-east1-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/smartgrowthbot/smartgrowthbot-app
+  _APP_URL: https://app.smartgrowthbot.com
+  # OAuth client IDs are public (they appear in the sign-in URL); the secret lives in Secret Manager.
+  _GOOGLE_CLIENT_ID: 849310988206-6k0v98s14eu835dguodmd6un59lnh3rc.apps.googleusercontent.com
+
+steps:
+  - id: Build
+    name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "${_IMAGE}:${COMMIT_SHA}", "-t", "${_IMAGE}:latest", "."]
+
+  - id: Push
+    name: gcr.io/cloud-builders/docker
+    args: ["push", "--all-tags", "${_IMAGE}"]
+
+  - id: Deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk:slim
+    entrypoint: gcloud
+    # Settings come from here and from Secret Manager (this project doesn't
+    # allow editing the service's variables in the console). Secret values are
+    # never stored in the repo: create them once in Secret Manager.
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --image=${_IMAGE}:${COMMIT_SHA}
+      - --region=${_REGION}
+      - --update-env-vars=APP_URL=${_APP_URL},GOOGLE_CLIENT_ID=${_GOOGLE_CLIENT_ID}
+      - --update-secrets=ENCRYPTION_KEY=ENCRYPTION_KEY:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest,PLATFORM_ADMIN_EMAILS=PLATFORM_ADMIN_EMAILS:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest
+      - --quiet
+
+images:
+  - "${_IMAGE}:${COMMIT_SHA}"
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+  # The trigger may pass extra substitutions left from the console setup.
+  substitutionOption: ALLOW_LOOSE
