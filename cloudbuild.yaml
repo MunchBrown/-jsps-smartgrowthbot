@@ -6,7 +6,7 @@ substitutions:
   _REGION: us-east1
   _SERVICE: smartgrowthbot-app
   _IMAGE: us-east1-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/smartgrowthbot/smartgrowthbot-app
-  _APP_URL: https://smartgrowthbot-app-849310988206.us-east1.run.app
+  _APP_URL: https://app.smartgrowthbot.com
   # OAuth client IDs are public (they appear in the sign-in URL); the secret lives in Secret Manager.
   _GOOGLE_CLIENT_ID: 849310988206-6k0v98s14eu835dguodmd6un59lnh3rc.apps.googleusercontent.com
 
