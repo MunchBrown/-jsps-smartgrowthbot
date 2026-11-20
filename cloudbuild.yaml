@@ -7,6 +7,8 @@ substitutions:
   _SERVICE: smartgrowthbot-app
   _IMAGE: us-east1-docker.pkg.dev/${PROJECT_ID}/cloud-run-source-deploy/smartgrowthbot/smartgrowthbot-app
   _APP_URL: https://smartgrowthbot-app-849310988206.us-east1.run.app
+  # OAuth client IDs are public (they appear in the sign-in URL); the secret lives in Secret Manager.
+  _GOOGLE_CLIENT_ID: 849310988206-6k0v98s14eu835dguodmd6un59lnh3rc.apps.googleusercontent.com
 
 steps:
   - id: Build
@@ -29,8 +31,8 @@ steps:
       - ${_SERVICE}
       - --image=${_IMAGE}:${COMMIT_SHA}
       - --region=${_REGION}
-      - --update-env-vars=APP_URL=${_APP_URL}
-      - --update-secrets=ENCRYPTION_KEY=ENCRYPTION_KEY:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest,PLATFORM_ADMIN_EMAILS=PLATFORM_ADMIN_EMAILS:latest
+      - --update-env-vars=APP_URL=${_APP_URL},GOOGLE_CLIENT_ID=${_GOOGLE_CLIENT_ID}
+      - --update-secrets=ENCRYPTION_KEY=ENCRYPTION_KEY:latest,GEMINI_API_KEY=GEMINI_API_KEY:latest,PLATFORM_ADMIN_EMAILS=PLATFORM_ADMIN_EMAILS:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest
       - --quiet
 
 images:
