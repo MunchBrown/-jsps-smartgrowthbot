@@ -7,6 +7,7 @@ import { useSession, isAdmin } from "../../lib/session";
 import { AuthShell } from "./AuthScreens";
 import { BrandMark } from "./Brand";
 import { Button, Field, Input, ErrorText, Notice } from "./ui";
+import PlatformAdmin from "./PlatformAdmin";
 
 export function OnboardingScreen() {
   const { refresh, user } = useSession();
@@ -164,6 +165,12 @@ export function ChoosePlanScreen({ notice }: { notice?: string }) {
           </div>
         )}
         <p className="text-xs text-slate-500 mt-6">Prices in USD. Card required to start the trial; billed monthly after the trial. Promo codes can be entered at checkout.</p>
+        {me?.user.platformAdmin && (
+          <div className="mt-12 pt-8 border-t border-slate-800">
+            <Notice>You're a platform admin. Give your own company (or a beta company) free access below, then reload this page.</Notice>
+            <div className="mt-6"><PlatformAdmin /></div>
+          </div>
+        )}
       </div>
     </div>
   );
